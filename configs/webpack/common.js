@@ -11,8 +11,8 @@ module.exports = {
   module: {
     rules: [
       {
-        test: [/\.jsx?$/, /\.tsx?$/],
-        use: ["babel-loader"],
+        test: [/\.tsx?$/],
+        use: ["ts-loader"],
         exclude: /node_modules/,
       },
       {
@@ -21,16 +21,22 @@ module.exports = {
       },
       {
         test: /\.(scss|sass)$/,
-        use: ["style-loader", "css-loader", "sass-loader"],
+        use: [
+          "style-loader", {
+          loader: "css-loader",
+          options: {
+            importLoaders: 1,
+            modules: true,
+          },
+        }, 
+        "sass-loader"
+      ],
       },
       {
         test: /\.(jpe?g|png|gif|svg)$/i,
-        use: [
-          "file-loader?hash=sha512&digest=hex&name=img/[contenthash].[ext]",
-          "image-webpack-loader?bypassOnDebug&optipng.optimizationLevel=7&gifsicle.interlaced=false",
-        ],
+        type: 'asset/resource'
       },
     ],
   },
-  plugins: [new HtmlWebpackPlugin({ template: "index.html.ejs" })],
+  plugins: [new HtmlWebpackPlugin({ template: "../index.html.ejs" })],
 };
